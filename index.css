@@ -1,0 +1,239 @@
+/* ریسیت کلی و فونت */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    text-align: right;
+    direction: rtl;
+}
+
+body {
+    font-family: 'Vazirmatn'; /* پیشنهاد می‌شود فونت Vazirmatn را لینک کنید */
+    background: #fed83d;
+    color: #0c0c0c;
+    overflow-x: hidden;
+}
+
+/* مدیریت نمایش صفحات */
+.screen {
+    display: none;
+    min-height: 100vh;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.4s ease;
+}
+
+.screen.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* استایل محتوای صفحات شروع و موفقیت */
+.intro-content, .success-content {
+    background: #eee154;
+    padding: 40px;
+    border-radius: 20px;
+    border: 3px solid #0c0c0c;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 10px 10px 0px #0c0c0c;
+}
+
+.btn-primary {
+    margin-top: 25px;
+    padding: 15px 45px;
+    font-size: 18px;
+    background: #0c0c0c;
+    color: #fcfbf5;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    transform: scale(1.05);
+}
+
+button, #submit-btn, .btn-primary {
+    text-align: center !important;
+}
+
+/* فرم و اینپوت‌ها */
+.contact-con {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.contact-left {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 450px;
+}
+
+.contact-inputs {
+    width: 100%;
+    height: 45px;
+    border: 1.75px solid #0c0c0c; /* لبه سیاه در حالت عادی */
+    outline: none;
+    padding: 0 15px;
+    background: #edc72e66;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.contact-inputs:focus {
+    background: #edc72e;
+    border-color: #646108;
+}
+
+/* بخش انتخاب روزها مشابه پرس‌لاین */
+.porsline-container {
+    margin-top: 10px;
+}
+
+.question-title {
+    font-size: 19px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.question-subtitle {
+    font-size: 13px;
+    color: #444;
+    margin-bottom: 15px;
+}
+
+
+.question-input {
+    font-size: 19px;
+    font-weight: bold;
+    padding: auto;
+}
+
+.options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.custom-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #edc72e66;
+    border: 1.5px solid rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.custom-option input {
+    display: none; /* مخفی کردن تیک پیشفرض */
+}
+
+.opt-text {
+    flex-grow: 1;
+    font-weight: 500;
+}
+
+.opt-num {
+    background: #4a5568;
+    color: white;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+/* حالت انتخاب شده */
+.custom-option:has(input:checked), .custom-option.selected {
+    border: 2.5px solid #646108;
+
+}
+
+/* باکس خطای قرمز */
+.error-box {
+    display: none;
+    background: #e91e63;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* صفحه موفقیت */
+
+/* تنظیمات لایه شیشه‌ای سراسری */
+#success-screen {
+    display: none; /* در ابتدا مخفی */
+    position: fixed; /* ثابت روی کل صفحه */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* رنگ تیره نیمه‌شفاف برای پشت صفحه */
+    backdrop-filter: blur(8px); /* افکت مات شدن (شیشه‌ای) پشت صحنه */
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999; /* قرار گرفتن روی همه المان‌ها */
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+/* نمایش در صورت فعال بودن */
+#success-screen.active {
+    display: flex;
+}
+
+/* باکس محتوای پیام موفقیت */
+.success-content {
+    background: #a4f88a; /* تم زرد شما */
+    padding: 50px;
+    color: #5a9c33;
+    border-radius: 25px;
+    border: 2.2px solid #0c0c0c;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    transform: scale(0.8);
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popIn {
+    to { transform: scale(1); }
+}
+
+/* دکمه داخل صفحه موفقیت */
+.success-content .btn-primary {
+    width: 100%;
+    background: #93f562;
+    color: #5ba033;
+    margin-top: 20px;
+}
+
+/* ریسپانسیو */
+@media (max-width: 800px) {
+    .contact-right { display: none; }
+    .contact-left { max-width: 100%; }
+}
+
