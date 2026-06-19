@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشاوره اِوان</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <!-- ۱- صفحه شروع (Intro) -->
+    <div id="intro-screen" class="screen active">
+        <div class="intro-content">
+            <h1>سلام خوش آمدید!</h1>
+            <p>برای ثبت درخواست مشاوره روی دکمه شروع کلیک کنید</p>
+            <button onclick="showScreen('form-screen')" class="btn-primary">شروع</button>
+        </div>
+    </div>
+
+    <!-- ۲- صفحه اصلی فرم -->
+    <div id="form-screen" class="screen">
+        <div class="contact-con">
+            <form id="my-form" class="contact-left">
+
+                <!-- اینپوت‌های متنی با لبه سیاه -->
+                <p class="question-input">نام و نام خانوادگی</p>
+                <input type="text" name="name" placeholder="محل درج پاسخ" class="contact-inputs" required>
+                <p class="question-input">شماره تلفن</p>
+                <input type="text" name="number" placeholder="09xxxxxxxxx" class="contact-inputs" required>
+                <p class="question-input">نام پروژه</p>
+                <input type="text" name="project" placeholder="نام پروژه شما" class="contact-inputs">
+
+                <!-- بخش انتخاب روزها (استایل پرس‌لاین) -->
+                <div class="porsline-container">
+                    <p class="question-title">بهترین روز برای ارتباط مشاوران با شما</p>
+                    <p class="question-subtitle">(حداقل ۲ گزینه را انتخاب کنید)</p>
+
+                    <div class="options-grid">
+                        <label class="custom-option">
+                            <input type="checkbox" name="days" value="شنبه" class="day-checkbox">
+                            <span class="opt-text">شنبه</span>
+                            <span class="opt-num">۱</span>
+                        </label>
+                        <label class="custom-option">
+                            <input type="checkbox" name="days" value="یکشنبه" class="day-checkbox">
+                            <span class="opt-text">یکشنبه</span>
+                            <span class="opt-num">۲</span>
+                        </label>
+                        <label class="custom-option">
+                            <input type="checkbox" name="days" value="دوشنبه" class="day-checkbox">
+                            <span class="opt-text">دوشنبه</span>
+                            <span class="opt-num">۳</span>
+                        </label>
+                        <label class="custom-option">
+                            <input type="checkbox" name="days" value="سه شنبه" class="day-checkbox">
+                            <span class="opt-text">سه‌شنبه</span>
+                            <span class="opt-num">۴</span>
+                        </label>
+                        <label class="custom-option">
+                            <input type="checkbox" name="days" value="چهارشنبه" class="day-checkbox">
+                            <span class="opt-text">چهارشنبه</span>
+                            <span class="opt-num">۵</span>
+                        </label>
+                        <label class="custom-option">
+                            <input type="checkbox" name="days" value="پنجشنبه" class="day-checkbox">
+                            <span class="opt-text">پنجشنبه</span>
+                            <span class="opt-num">۶</span>
+                        </label>
+                        <label class="custom-option all-opt">
+                            <input type="checkbox" name="days" value="همه موارد" id="all-days-trigger">
+                            <span class="opt-text">همه موارد</span>
+                            <span class="opt-num">۷</span>
+                        </label>
+                    </div>
+                    
+                    <div id="error-msg" class="error-box">حداقل ۲ گزینه را انتخاب کنید</div>
+                </div>
+
+                <button type="submit" id="submit-btn" class="btn-primary">ارسال</button>
+            </form>
+            
+    <!-- ۳- صفحه موفقیت (Success) -->
+    <div id="success-screen" class="screen">
+        <div class="success-content">
+            <!--<div class="success-icon">✓</div>-->
+            <h2>ارسال شد!</h2>
+            <p>به زودی مشاوران ما با شما تماس خواهند گرفت</p>
+            <button onclick="location.reload()" class="btn-primary">بازگشت</button>
+        </div>
+    </div>
+
+    <script>
+        // ۱. تابع جابجایی بین صفحات
+        function showScreen(screenId) {
+            if (screenId === 'success-screen') {
+        // برای صفحه موفقیت، فقط لایه جدید را اضافه کن و قبلی را مخفی نکن
+                document.getElementById(screenId).classList.add('active');
+        } else {
+        // برای بقیه صفحات (مثل رفتن از شروع به فرم)، بقیه را مخفی کن
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                document.getElementById(screenId).classList.add('active');
+    }
+    window.scrollTo(0,0);
+}
+        // ۲. منطق انتخاب روزها
+        const dayCheckboxes = document.querySelectorAll('.day-checkbox');
+        const allDaysTrigger = document.getElementById('all-days-trigger');
+        const errorMsg = document.getElementById('error-msg');
+        const form = document.getElementById('my-form');
+
+        // مدیریت گزینه "همه موارد"
+        allDaysTrigger.addEventListener('change', function() {
+            dayCheckboxes.forEach(cb => {
+                cb.checked = false;
+                cb.disabled = this.checked;
+                cb.parentElement.style.opacity = this.checked ? "0.5" : "1";
+                cb.parentElement.classList.remove('selected');
+            });
+            checkValidation();
+        });
+
+        // محدودیت تعداد انتخاب (حداکثر ۴)
+        dayCheckboxes.forEach(cb => {
+            cb.addEventListener('change', function() {
+                const checkedCount = document.querySelectorAll('.day-checkbox:checked').length;
+                if (checkedCount > 4) {
+                    this.checked = false;
+                    alert("حداکثر ۴ روز را می‌توانید انتخاب کنید.");
+                }
+                // اضافه کردن کلاس برای تغییر استایل بصری
+                if(this.checked) this.parentElement.classList.add('selected');
+                else this.parentElement.classList.remove('selected');
+                
+                checkValidation();
+            });
+        });
+
+        // بررسی اعتبار انتخاب‌ها
+        function checkValidation() {
+            const checkedCount = document.querySelectorAll('.day-checkbox:checked').length;
+            const isAllChecked = allDaysTrigger.checked;
+            if (isAllChecked || checkedCount >= 2) {
+                errorMsg.style.display = 'none';
+                return true;
+            }
+            return false;
+        }
+
+        // ۳. ارسال فرم به گوگل شیت
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxwSiCJxE5E5qly9S0KOxneMuLZac0K9d7jSucbugaNolMnnwU0YuCmFoK4H3MGO6z0/exec'; 
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            if (!checkValidation()) {
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            const btn = document.getElementById('submit-btn');
+            btn.disabled = true;
+            btn.innerText = "در حال ارسال...";
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+              .then(response => {
+                showScreen('success-screen');
+                form.reset();
+              })
+              .catch(error => {
+                  console.error('Error!', error.message);
+                  alert('خطایی رخ داد. لطفا دوباره تلاش کنید.');
+                  btn.disabled = false;
+                  btn.innerText = "ثبت اطلاعات";
+              });
+        });
+    </script>
+</body>
+</html>
